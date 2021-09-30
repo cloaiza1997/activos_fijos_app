@@ -8,7 +8,10 @@ import React from "react"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { MainNavigator } from "./main-navigator"
-import { color } from "../theme"
+import { LoginScreen } from "../screens/login/login-screen"
+import { RecoveryScreen } from "../screens/login/recovery-screen"
+import { useStores } from "../models"
+import { observer } from "mobx-react-lite"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -21,29 +24,52 @@ import { color } from "../theme"
  *   https://reactnavigation.org/docs/typescript#type-checking-the-navigator
  */
 export type RootParamList = {
+  login: undefined
+  recovery: undefined
   mainStack: undefined
 }
 
 const Stack = createStackNavigator<RootParamList>()
 
-const RootStack = () => {
+const RootStack = observer(function RootStack() {
+  const { userStore } = useStores()
+
   return (
     <Stack.Navigator
       screenOptions={{
-        cardStyle: { backgroundColor: color.palette.deepPurple },
         headerShown: false,
       }}
     >
-      <Stack.Screen
-        name="mainStack"
-        component={MainNavigator}
-        options={{
-          headerShown: false,
-        }}
-      />
+      {userStore.token ? (
+        <Stack.Screen
+          name="mainStack"
+          component={MainNavigator}
+          options={{
+            headerShown: false,
+          }}
+        />
+      ) : (
+        <>
+          <Stack.Screen
+            name="login"
+            component={LoginScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="recovery"
+            component={RecoveryScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+        </>
+      )}
     </Stack.Navigator>
   )
-}
+})
 
 export const RootNavigator = React.forwardRef<
   NavigationContainerRef,

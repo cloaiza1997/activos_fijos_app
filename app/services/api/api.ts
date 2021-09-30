@@ -2,6 +2,8 @@ import { ApisauceInstance, create, ApiResponse } from "apisauce"
 import { getGeneralApiProblem } from "./api-problem"
 import { ApiConfig, DEFAULT_API_CONFIG } from "./api-config"
 import * as Types from "./api.types"
+import * as storage from "../../utils/storage"
+import { USER_AUTH_TOKEN } from "../../models/user/user.const"
 
 /**
  * Manages all requests to the API.
@@ -40,7 +42,17 @@ export class Api {
       timeout: this.config.timeout,
       headers: {
         Accept: "application/json",
+        client: "MOBILE",
       },
+    })
+
+    // Agrega header a la petición los cuales se obtienen de manera asíncrona desde el AsynStorage
+    this.apisauce.addAsyncRequestTransform((request) => async () => {
+      const authUserToken = await storage.loadString(USER_AUTH_TOKEN)
+
+      if (authUserToken) {
+        request.headers.Authorization = "Bearer " + authUserToken
+      }
     })
   }
 

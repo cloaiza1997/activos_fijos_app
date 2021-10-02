@@ -7,6 +7,8 @@
 import { CertificateListApproverScreen } from "../screens/apps/certificate/certificate-list-approver-screen"
 import { CertificateViewScreen } from "../screens/apps/certificate/certificate-view-screen"
 import { createStackNavigator } from "@react-navigation/stack"
+import { DerecognitionListApproverScreen } from "../screens/apps/derecognition/derecognition-list-approver-screen"
+import { DerecognitionViewScreen } from "../screens/apps/derecognition/derecognition-view-screen"
 import { MenuScreen } from "../screens/menu/menu-screen"
 import { PurchaseListApproverScreen } from "../screens/apps/purchase/purchase-list-approver-screen"
 import { PurchaseViewScreen } from "../screens/apps/purchase/purchase-view-screen"
@@ -30,6 +32,8 @@ export type PrimaryParamList = {
   purchaseView: undefined
   certificate: undefined
   certificateView: undefined
+  derecognition: undefined
+  derecognitionView: undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
@@ -48,6 +52,8 @@ export function MainNavigator() {
       <Stack.Screen name="purchaseView" component={PurchaseViewScreen} />
       <Stack.Screen name="certificate" component={CertificateListApproverScreen} />
       <Stack.Screen name="certificateView" component={CertificateViewScreen} />
+      <Stack.Screen name="derecognition" component={DerecognitionListApproverScreen} />
+      <Stack.Screen name="derecognitionView" component={DerecognitionViewScreen} />
     </Stack.Navigator>
   )
 }

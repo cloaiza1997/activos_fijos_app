@@ -1,5 +1,6 @@
 import { CertificateStoreModel } from "../certificate/certificate"
 import { CharacterStoreModel } from "../character-store/character-store"
+import { DerecognitionStoreModel } from "../derecognition/derecognition"
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
 import { PurchaseStoreModel } from "../purchase/purchase"
 import { UserStoreModel } from "../user/user"
@@ -11,6 +12,7 @@ import { UserStoreModel } from "../user/user"
 export const RootStoreModel = types.model("RootStore").props({
   certificateStore: types.optional(CertificateStoreModel, {}),
   characterStore: types.optional(CharacterStoreModel, {} as any),
+  derecognitionStore: types.optional(DerecognitionStoreModel, {}),
   purchaseStore: types.optional(PurchaseStoreModel, {}),
   userStore: types.optional(UserStoreModel, {}),
 })

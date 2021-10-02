@@ -16,6 +16,8 @@ export const MenuScreen = observer(function MenuScreen() {
 
   const [loading, setLoading] = useState(false)
 
+  const goTo = (route) => navigation.navigate(route)
+
   const onLogout = () => {
     setLoading(true)
 
@@ -41,7 +43,22 @@ export const MenuScreen = observer(function MenuScreen() {
 
           <Text>{user?.role}</Text>
 
-          <Button text="Cerrar sesión" onPress={onLogout} />
+          <View style={style.buttonsContainer}>
+            <Text>Aprobaciones</Text>
+
+            <Button text="Compras" style={style.button} onPress={() => goTo("purchase")} />
+            <Button text="Actas" style={style.button} />
+            <Button text="Bajas" style={style.button} />
+          </View>
+
+          <View style={style.buttonsContainer}>
+            <Button
+              text="Cerrar sesión"
+              textStyle={style.buttonText}
+              onPress={onLogout}
+              style={[style.button, style.logout]}
+            />
+          </View>
         </View>
       </ScrollView>
     </>
@@ -50,21 +67,25 @@ export const MenuScreen = observer(function MenuScreen() {
 
 const style = StyleSheet.create({
   button: {
-    margin: 16,
-    width: 200,
+    marginHorizontal: 16,
+    marginTop: 16,
+    width: "100%",
   },
-  input: {
-    width: "80%",
+  buttonText: {
+    color: color.palette.white,
   },
-  link: {
-    color: color.palette.blue,
-    fontSize: 14,
-    textDecorationLine: "underline",
+  buttonsContainer: {
+    alignItems: "center",
+    padding: 20,
+    width: "100%",
   },
   logo: {
     height: 150,
     marginBottom: 20,
     width: 150,
+  },
+  logout: {
+    backgroundColor: color.palette.blue,
   },
   mainContainer: {
     alignItems: "center",

@@ -1,7 +1,13 @@
 /* eslint-disable react-native/split-platform-components */
+import {
+  USER_AUTH_TOKEN,
+  USER_LOGIN,
+  USER_LOGOUT,
+  USER_RECOVERY_PASSWORD,
+  USER_ROLE_APPROVER,
+} from "./user.const"
 import { Alert, ToastAndroid } from "react-native"
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
-import { USER_AUTH_TOKEN, USER_LOGIN, USER_LOGOUT, USER_RECOVERY_PASSWORD } from "./user.const"
 import { withEnvironment } from "../extensions/with-environment"
 import * as storage from "../../utils/storage"
 
@@ -25,9 +31,16 @@ export const UserStoreModel = types
       const data: any = result?.data
 
       if (data?.status) {
-        self.setLogin(data.user, data.token)
+        if (data?.user?.get_role?.parameter_key === USER_ROLE_APPROVER) {
+          self.setLogin(data.user, data.token)
 
-        storage.saveString(USER_AUTH_TOKEN, data.token)
+          storage.saveString(USER_AUTH_TOKEN, data.token)
+        } else {
+          Alert.alert(
+            "Error",
+            `Usuario con rol ${data?.user?.get_role?.str_val} no puede iniciar sesión`,
+          )
+        }
 
         success()
       } else {

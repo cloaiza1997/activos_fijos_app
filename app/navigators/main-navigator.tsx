@@ -4,10 +4,11 @@
  *
  * You'll likely spend most of your time in this file.
  */
-import React from "react"
 import { createStackNavigator } from "@react-navigation/stack"
-// import { WelcomeScreen, DemoScreen, DemoListScreen } from "../screens"
 import { MenuScreen } from "../screens/menu/menu-screen"
+import { PurchaseListApproverScreen } from "../screens/apps/purchase/purchase-list-approver-screen"
+import { PurchaseViewScreen } from "../screens/apps/purchase/purchase-view-screen"
+import React from "react"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -23,9 +24,8 @@ import { MenuScreen } from "../screens/menu/menu-screen"
  */
 export type PrimaryParamList = {
   home: undefined
-  // welcome: undefined
-  // demo: undefined
-  // demoList: undefined
+  purchase: undefined
+  purchaseView: undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
@@ -40,9 +40,8 @@ export function MainNavigator() {
       }}
     >
       <Stack.Screen name="home" component={MenuScreen} />
-      {/* <Stack.Screen name="welcome" component={WelcomeScreen} /> */}
-      {/* <Stack.Screen name="demo" component={DemoScreen} /> */}
-      {/* <Stack.Screen name="demoList" component={DemoListScreen} />  */}
+      <Stack.Screen name="purchase" component={PurchaseListApproverScreen} />
+      <Stack.Screen name="purchaseView" component={PurchaseViewScreen} />
     </Stack.Navigator>
   )
 }

@@ -1,8 +1,8 @@
 import {
-  PURCHASE_STATUS_APPROVED,
-  PURCHASE_STATUS_CHECKING,
-  PURCHASE_STATUS_REJECTED,
-} from "../../../models/purchase/purchase.const"
+  CERTIFICATE_CHECKING,
+  CERTIFICATE_URL_STATUS_APPROVED,
+  CERTIFICATE_URL_STATUS_REJECTED,
+} from "../../../models/certificate/certificate.const"
 import { Alert, ScrollView, StyleSheet, View } from "react-native"
 import { Button, Header, Loading, Text, TextField } from "../../../components"
 import { color } from "../../../theme"
@@ -12,44 +12,44 @@ import { useNavigation } from "@react-navigation/native"
 import { useStores } from "../../../models"
 import React, { useEffect, useState } from "react"
 
-export const PurchaseViewScreen = observer(function PurchaseViewScreen(props: any) {
+export const CertificateViewScreen = observer(function CertificateViewScreen(props: any) {
   const navigation = useNavigation()
 
-  const { purchaseId } = props?.route?.params || {}
+  const { certificateId } = props?.route?.params || {}
 
-  const { purchaseStore } = useStores()
+  const { certificateStore } = useStores()
 
   const [loading, setLoading] = useState(false)
-  const [purchase, setPurchase] = useState(undefined)
+  const [certificate, setCertificate] = useState(undefined)
   const [skeleton, setSkeleton] = useState(true)
 
   const goBack = () => navigation.goBack()
 
-  const onUpdateStatus = (status) => {
+  const onUpdateStatus = (url) => {
     setLoading(true)
 
-    purchaseStore.updateStatus({ purchaseId, status }).then((response) => {
+    certificateStore.updateStatus({ certificateId, url }).then((response) => {
       if (response) {
-        setPurchase(response)
+        setCertificate({ ...certificate, ...response })
       }
 
       setLoading(false)
     })
   }
 
-  const onConfirm = (message, status) => {
+  const onConfirm = (message, url) => {
     Alert.alert("Confirmar", message, [
       {
         text: "Cancelar",
       },
-      { text: "Aceptar", onPress: () => onUpdateStatus(status) },
+      { text: "Aceptar", onPress: () => onUpdateStatus(url) },
     ])
   }
 
   useEffect(() => {
-    purchaseStore.getPurchase({ purchaseId }).then((response) => {
+    certificateStore.getCertificate({ certificateId }).then((response) => {
       if (response) {
-        setPurchase(response)
+        setCertificate(response)
         setSkeleton(false)
       } else {
         goBack()
@@ -61,7 +61,7 @@ export const PurchaseViewScreen = observer(function PurchaseViewScreen(props: an
     <>
       <Header headerText="Orden de compra" leftIcon="back" onLeftPress={goBack} />
 
-      {skeleton && !purchase ? (
+      {skeleton && !certificate ? (
         <Loading />
       ) : (
         <>
@@ -69,71 +69,72 @@ export const PurchaseViewScreen = observer(function PurchaseViewScreen(props: an
 
           <ScrollView>
             <View style={style.mainContainer}>
-              <TextField label="Número" value={purchase?.id + ""} editable={false} />
+              <TextField label="Número" value={certificate?.id + ""} editable={false} />
 
-              <TextField label="Estado" value={purchase?.get_status?.str_val} editable={false} />
-
-              <TextField
-                label="Solicitado por"
-                value={purchase?.get_requesting_user?.display_name}
-                editable={false}
-              />
-
-              <TextField label="Proveedor" value={purchase?.get_provider?.name} editable={false} />
+              <TextField label="Estado" value={certificate?.get_status?.str_val} editable={false} />
 
               <TextField
-                label="Fecha de entrega"
-                value={purchase?.delivery_date}
+                label="Entrega"
+                value={certificate?.get_deliver_user?.display_name}
                 editable={false}
               />
 
               <TextField
-                label="Ciudad de entrega"
-                value={purchase?.get_city?.str_val}
+                label="Área que entrega"
+                value={certificate?.get_deliver_area?.str_val}
                 editable={false}
               />
 
               <TextField
-                label="Dirección de entrega"
-                value={purchase?.delivery_address}
+                label="Recibe"
+                value={certificate?.get_receiver_user?.display_name}
+                editable={false}
+              />
+
+              <TextField
+                label="Área que entrega"
+                value={certificate?.get_receiver_area?.str_val}
                 editable={false}
               />
 
               <TextField
                 label="Observaciones"
-                value={purchase?.observations}
+                value={certificate?.observations}
                 multiline
                 editable={false}
               />
 
-              <Text style={style.title}>Productos</Text>
+              <Text style={style.title}>Activos del acta</Text>
 
               <View>
-                {purchase?.get_purchase_items?.map((item) => (
+                {certificate?.get_certificate_details?.map((item) => (
                   <View key={item.id} style={style.item}>
-                    <Text>
-                      {item.product} ({item.quantity} unds)
-                    </Text>
-                    <Text>Valor unitario: $ {item.unit_value}</Text>
-                    <Text>Valor total: $ {item.total_value}</Text>
+                    <Text>{item.asset_number}</Text>
+                    <Text>{item.name}</Text>
+                    <Text>{item.brand}</Text>
+                    <Text>{item.serial_number}</Text>
+                    <Text>Estado: {item.get_physical_status?.str_val}</Text>
                   </View>
                 ))}
               </View>
 
               <View>
-                <Text>Elaborado por: {purchase?.get_creator_user?.display_name}</Text>
+                <Text>Elaborado por: {certificate?.get_creator_user?.display_name}</Text>
 
-                <Text>Fecha de ejecución: {formatDate(purchase?.created_at)}</Text>
+                <Text>Fecha de ejecución: {formatDate(certificate?.created_at)}</Text>
               </View>
 
-              {purchase?.get_status.parameter_key === PURCHASE_STATUS_CHECKING && (
+              {certificate?.get_status.parameter_key === CERTIFICATE_CHECKING && (
                 <View style={style.buttonContainer}>
                   <Button
                     text="Rechazar"
                     style={style.reject}
                     textStyle={style.text}
                     onPress={() =>
-                      onConfirm("¿Confirma rechazar la orden de compra?", PURCHASE_STATUS_REJECTED)
+                      onConfirm(
+                        "¿Confirma rechazar el acta de movimiento?",
+                        CERTIFICATE_URL_STATUS_REJECTED,
+                      )
                     }
                   />
 
@@ -142,7 +143,10 @@ export const PurchaseViewScreen = observer(function PurchaseViewScreen(props: an
                     style={style.approve}
                     textStyle={style.text}
                     onPress={() =>
-                      onConfirm("¿Confirma aprobar la orden de compra?", PURCHASE_STATUS_APPROVED)
+                      onConfirm(
+                        "¿Confirma aprobar el acta de movimiento?",
+                        CERTIFICATE_URL_STATUS_APPROVED,
+                      )
                     }
                   />
                 </View>

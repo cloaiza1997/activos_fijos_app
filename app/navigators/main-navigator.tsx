@@ -4,6 +4,8 @@
  *
  * You'll likely spend most of your time in this file.
  */
+import { CertificateListApproverScreen } from "../screens/apps/certificate/certificate-list-approver-screen"
+import { CertificateViewScreen } from "../screens/apps/certificate/certificate-view-screen"
 import { createStackNavigator } from "@react-navigation/stack"
 import { MenuScreen } from "../screens/menu/menu-screen"
 import { PurchaseListApproverScreen } from "../screens/apps/purchase/purchase-list-approver-screen"
@@ -26,6 +28,8 @@ export type PrimaryParamList = {
   home: undefined
   purchase: undefined
   purchaseView: undefined
+  certificate: undefined
+  certificateView: undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
@@ -42,6 +46,8 @@ export function MainNavigator() {
       <Stack.Screen name="home" component={MenuScreen} />
       <Stack.Screen name="purchase" component={PurchaseListApproverScreen} />
       <Stack.Screen name="purchaseView" component={PurchaseViewScreen} />
+      <Stack.Screen name="certificate" component={CertificateListApproverScreen} />
+      <Stack.Screen name="certificateView" component={CertificateViewScreen} />
     </Stack.Navigator>
   )
 }

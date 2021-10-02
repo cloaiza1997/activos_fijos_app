@@ -47,7 +47,7 @@ export const MenuScreen = observer(function MenuScreen() {
             <Text>Aprobaciones</Text>
 
             <Button text="Compras" style={style.button} onPress={() => goTo("purchase")} />
-            <Button text="Actas" style={style.button} />
+            <Button text="Actas" style={style.button} onPress={() => goTo("certificate")} />
             <Button text="Bajas" style={style.button} />
           </View>
 

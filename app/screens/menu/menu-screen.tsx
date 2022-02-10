@@ -8,6 +8,12 @@ import React, { useState } from "react"
 
 const LOGO = require("../../assets/logo_1.png")
 
+/**
+ * @function MenuScreen
+ * @brief Menú principal
+ * @date 01/06/2021
+ * @author Cristian Loaiza <cristianaloaiza@estudiante.uniajc.edu.co>
+ */
 export const MenuScreen = observer(function MenuScreen() {
   const navigation = useNavigation()
 
@@ -39,7 +45,7 @@ export const MenuScreen = observer(function MenuScreen() {
         <View style={style.mainContainer}>
           <Image source={LOGO} style={style.logo} />
 
-          <Text style={style.title}>Bienvenido, {user?.display_name}</Text>
+          <Text style={style.title}>Bienvenid@, {user?.display_name}</Text>
 
           <Text>{user?.role}</Text>
 

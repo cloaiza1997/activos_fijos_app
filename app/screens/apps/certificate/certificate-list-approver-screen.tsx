@@ -7,6 +7,12 @@ import { useNavigation, useIsFocused } from "@react-navigation/native"
 import { useStores } from "../../../models"
 import React, { useEffect, useState } from "react"
 
+/**
+ * @function CertificateListApproverScreen
+ * @brief Listado de aprobaciones de actas
+ * @date 01/06/2021
+ * @author Cristian Loaiza <cristianaloaiza@estudiante.uniajc.edu.co>
+ */
 export const CertificateListApproverScreen = observer(function CertificateListApproverScreen() {
   const navigation = useNavigation()
 

@@ -8,6 +8,12 @@ import React, { useEffect, useState } from "react"
 
 const LOGO = require("../../assets/logo_1.png")
 
+/**
+ * @function RecoveryScreen
+ * @brief Formulario de recuperación de contraseña
+ * @date 01/06/2021
+ * @author Cristian Loaiza <cristianaloaiza@estudiante.uniajc.edu.co>
+ */
 export const RecoveryScreen = observer(function RecoveryScreen() {
   const navigation = useNavigation()
 

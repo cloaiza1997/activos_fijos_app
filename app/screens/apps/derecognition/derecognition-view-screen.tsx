@@ -12,6 +12,12 @@ import { useNavigation } from "@react-navigation/native"
 import { useStores } from "../../../models"
 import React, { useEffect, useState } from "react"
 
+/**
+ * @function DerecognitionViewScreen
+ * @brief Visualización de la baja para aprobación
+ * @date 01/06/2021
+ * @author Cristian Loaiza <cristianaloaiza@estudiante.uniajc.edu.co>
+ */
 export const DerecognitionViewScreen = observer(function DerecognitionViewScreen(props: any) {
   const navigation = useNavigation()
 
